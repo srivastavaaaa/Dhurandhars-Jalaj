@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "prisma generate && next dev",
+    "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint"
@@ -14,7 +14,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.468.0",
     "next": "^16.2.12",
-    "next-intl": "^3.25.0",
+    "next-intl": "^4.13.4",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "tailwind-merge": "^2.5.5"
