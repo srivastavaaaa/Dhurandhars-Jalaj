@@ -1,0 +1,224 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Farmer {
+  id                String          @id @default(uuid())
+  phone             String          @unique
+  name              String
+  preferredLanguage String          // "en" | "hi" | "mr" | "te" | "ta" | "kn" | "or"
+  village           String
+  district          String
+  state             String
+  landSizeAcres     Float
+  category          String          // "General" | "SC" | "ST" | "OBC"
+  consentGiven      Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  
+  farms             Farm[]
+  conversations     Conversation[]
+  schemeMatches     SchemeMatch[]
+  bookings          Booking[]
+  notifications     Notification[]
+  produceListings   ProduceListing[]
+
+  @@index([phone])
+  @@index([district])
+}
+
+model Farm {
+  id             String   @id @default(uuid())
+  farmerId       String
+  farmer         Farmer   @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  soilType       String   // "Clay" | "Sandy" | "Loam" | "Black" | "Red"
+  irrigationType String   // "Rainfed" | "Drip" | "Sprinkler" | "Canal" | "Well"
+  latitude       Float?
+  longitude      Float?
+  
+  crops          Crop[]
+}
+
+model Crop {
+  id                  String            @id @default(uuid())
+  farmId              String
+  farm                Farm              @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  cropName            String            // "Rice" | "Wheat" | "Cotton" | "Sugarcane" etc.
+  sownDate            DateTime
+  expectedHarvestDate DateTime
+  currentStage        String            // "Sowing" | "Vegetative" | "Flowering" | "HarvestReady" | "Harvested"
+  status              String            // "Healthy" | "Diseased" | "AtRisk"
+  
+  diagnoses           CropDiagnosis[]
+  harvestAdvisories   HarvestAdvisory[]
+
+  @@index([cropName])
+}
+
+model Conversation {
+  id           String    @id @default(uuid())
+  farmerId     String
+  farmer       Farmer    @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  channel      String    @default("web-chat")
+  lastActiveAt DateTime  @default(now())
+  
+  messages     Message[]
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         String       // "farmer" | "bot" | "agent"
+  contentType    String       // "text" | "voice" | "image"
+  content        String       // Message body or image url/voice transcript
+  intent         String?      // E.g., "scheme_check", "crop_diagnosis", "harvest_advice", "equipment_rent", "general"
+  confidenceScore Float?      // AI classification/vision confidence score
+  createdAt      DateTime     @default(now())
+}
+
+model Scheme {
+  id                String        @id @default(uuid())
+  name              String
+  level             String        // "Central" | "State"
+  description       String
+  eligibilityRules  String        // JSON string storing constraints like {"maxLandAcres": 5, "states": ["Maharashtra"]}
+  requiredDocuments String        // JSON array of strings
+  deadline          DateTime?
+  applyUrl          String
+  isActive          Boolean       @default(true)
+  source            String
+  
+  matches           SchemeMatch[]
+}
+
+model SchemeMatch {
+  id               String   @id @default(uuid())
+  farmerId         String
+  farmer           Farmer   @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  schemeId         String
+  scheme           Scheme   @relation(fields: [schemeId], references: [id], onDelete: Cascade)
+  eligibilityScore Float    // Match percentage (0 to 100)
+  status           String   // "suggested" | "applied" | "approved" | "rejected"
+  matchedAt        DateTime @default(now())
+}
+
+model CropDiagnosis {
+  id              String   @id @default(uuid())
+  cropId          String
+  crop            Crop     @relation(fields: [cropId], references: [id], onDelete: Cascade)
+  imageUrl        String
+  diagnosisResult String
+  confidenceScore Float
+  humanReviewed   Boolean  @default(false)
+  reviewedBy      String?
+  createdAt       DateTime @default(now())
+
+  @@index([cropId])
+}
+
+model HarvestAdvisory {
+  id                     String   @id @default(uuid())
+  cropId                 String
+  crop                   Crop     @relation(fields: [cropId], references: [id], onDelete: Cascade)
+  spoilageRiskScore      Float    // 0 to 100
+  recommendedStorageDays Int
+  recommendedAction      String   // "sell" | "store"
+  localPriceSnapshot     Float
+  createdAt              DateTime @default(now())
+
+  @@index([cropId])
+}
+
+model StorageFacility {
+  id          String @id @default(uuid())
+  name        String
+  district    String
+  state       String
+  location    String // Address or coordinates description
+  capacity    String
+  contactInfo String
+  costPerUnit Float  // INR per Quintal per Month
+  latitude    Float?
+  longitude   Float?
+
+  @@index([district])
+}
+
+model EquipmentListing {
+  id                   String    @id @default(uuid())
+  ownerId              String?   // null for CHC / Government
+  equipmentType        String    // "Tractor" | "Tiller" | "Thresher" | "Harvester" | "Rotavator"
+  location             String
+  district             String
+  state                String
+  pricePerDay          Float
+  availabilityCalendar String    // JSON array of booked dates: ["2026-07-31", "2026-08-01"]
+  source               String    // "peer" | "CHC" | "government"
+  imageUrl             String?
+  latitude             Float?
+  longitude            Float?
+  
+  bookings             Booking[]
+
+  @@index([district])
+  @@index([equipmentType])
+}
+
+model Booking {
+  id         String           @id @default(uuid())
+  listingId  String
+  listing    EquipmentListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  farmerId   String
+  farmer     Farmer           @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  startDate  DateTime
+  endDate    DateTime
+  status     String           // "pending" | "confirmed" | "completed" | "cancelled"
+  priceQuoted Float
+  createdAt  DateTime         @default(now())
+}
+
+model ProduceListing {
+  id            String   @id @default(uuid())
+  farmerId      String
+  farmer         Farmer   @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  crop          String
+  quantity      Float    // in kg
+  expectedPrice Float    // in INR/kg
+  buyerInterests String? // JSON buyer contacts
+  status        String   // "active" | "sold" | "cancelled"
+  createdAt     DateTime @default(now())
+}
+
+model Agent {
+  id             String @id @default(uuid())
+  name           String
+  role           String // "extension worker" | "FPO coordinator"
+  assignedRegion String // District name
+  contactInfo    String
+}
+
+model ReviewQueueItem {
+  id              String   @id @default(uuid())
+  type            String   // "scheme" | "diagnosis"
+  referenceId     String   // ID of SchemeMatch or CropDiagnosis
+  priority        String   // "low" | "medium" | "high"
+  status          String   // "pending" | "resolved" | "dismissed"
+  assignedAgentId String?
+  createdAt       DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  farmerId  String
+  farmer    Farmer   @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  type      String   // "scheme" | "harvest-risk" | "booking"
+  channel   String   // "in-app" | "sms" | "email"
+  content   String
+  sentAt    DateTime @default(now())
+  readAt    DateTime?
+}

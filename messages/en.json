@@ -1,0 +1,90 @@
+{
+  "common": {
+    "title": "KrishiMitra AI",
+    "tagline": "Intelligent Farming Platform for Indian Farmers",
+    "welcome": "Welcome",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "schemes": "Schemes",
+    "harvestAdvisor": "Harvest Advisor",
+    "equipment": "Rent Equipment",
+    "marketplace": "Marketplace",
+    "reviewQueue": "Review Queue",
+    "farmers": "Farmers List",
+    "analytics": "Analytics",
+    "loading": "Loading...",
+    "language": "Language",
+    "save": "Save Changes",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "phone": "Phone Number",
+    "name": "Full Name",
+    "village": "Village",
+    "district": "District",
+    "state": "State",
+    "landSize": "Land Size (Acres)",
+    "category": "Category",
+    "consent": "I agree to let KrishiMitra AI use my profile data to personalize recommendations and match schemes.",
+    "consentDisclaimer": "We secure your data and only use it to improve your farming yield and match eligible schemes."
+  },
+  "onboarding": {
+    "heading": "Register Your Farm",
+    "subheading": "Provide basic details to get personalized schemes, crop health diagnostics, and market advice.",
+    "enterPhone": "Enter Mobile Number",
+    "sendOtp": "Send OTP Verification",
+    "verifyOtp": "Verify OTP",
+    "otpSent": "A mock 6-digit OTP has been sent to your phone.",
+    "completed": "Onboarding Completed!",
+    "preferredLanguage": "Preferred Language",
+    "primaryCrops": "Primary Crop sown",
+    "soilType": "Soil Type",
+    "irrigationType": "Irrigation Type"
+  },
+  "chatbot": {
+    "floatingLabel": "KrishiMitra AI Assistant",
+    "placeholder": "Ask in your language (e.g. wheat seed subsidy...)",
+    "quickReplies": {
+      "schemes": "Check Eligible Schemes",
+      "diagnosis": "Diagnose Crop Health",
+      "harvest": "When should I sell?",
+      "equipment": "Rent a Tractor"
+    },
+    "voiceHold": "Hold to speak...",
+    "voiceRelease": "Release to send",
+    "expertReviewNote": "Checking with an agricultural expert, we will notify you in the dashboard shortly."
+  },
+  "schemes": {
+    "heading": "Eligible Government Schemes",
+    "subheading": "Determined based on your location, land size, and category. Disclaimer: Final eligibility confirmed by the official department.",
+    "applyNow": "Apply Now",
+    "requiredDocs": "Required Documents",
+    "deadline": "Deadline",
+    "matchScore": "Eligibility Match",
+    "officialSource": "Official Source",
+    "disclaimer": "Disclaimer: Final eligibility is verified and approved by the respective government department. KrishiMitra does not guarantee disbursement."
+  },
+  "harvest": {
+    "heading": "Post-Harvest Risk & Storage Advisor",
+    "subheading": "Check if you should sell your harvest now or store it to get a better price.",
+    "spoilageRisk": "Spoilage Risk Index",
+    "recommendedStorage": "Recommended Storage days",
+    "recommendedAction": "Recommended Action",
+    "sellAction": "Sell Now in local mandi",
+    "storeAction": "Store in Warehouse & wait",
+    "priceTrend": "Local Mandi Price Trend (per quintal)",
+    "facilitiesNearby": "Nearby Cold Storages & Warehouses",
+    "rentFacility": "Contact Facility",
+    "ratePerMonth": "₹{cost} / quintal / month"
+  },
+  "rental": {
+    "heading": "Custom Hiring Center (CHC) & Peer Rental",
+    "subheading": "Affordable farm equipment available for booking in your district.",
+    "searchPlaceholder": "Search Tractor, Tiller, Harvester...",
+    "bookNow": "Book Now",
+    "pricePerDay": "₹{price} / day",
+    "listingSource": "Provider",
+    "availability": "Availability Calendar",
+    "confirmed": "Booking Confirmed!",
+    "agentReview": "Agent Review"
+  }
+}
