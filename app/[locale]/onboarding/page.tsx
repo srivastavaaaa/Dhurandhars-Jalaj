@@ -66,13 +66,19 @@ export default function OnboardingPage() {
     }, 1000);
   };
 
+  const stateDistricts: Record<string, string> = {
+    'Maharashtra': 'Wardha',
+    'Andhra Pradesh': 'Guntur',
+    'Telangana': 'Warangal',
+    'Tamil Nadu': 'Coimbatore',
+    'Karnataka': 'Tumkur',
+    'Odisha': 'Cuttack',
+    'Uttar Pradesh': 'Bareilly'
+  };
+
   const handleStateChange = (selectedState: string) => {
     setState(selectedState);
-    if (selectedState === 'Maharashtra') {
-      setDistrict('Wardha');
-    } else if (selectedState === 'Andhra Pradesh') {
-      setDistrict('Guntur');
-    }
+    setDistrict(stateDistricts[selectedState] || '');
   };
 
   const handleSubmitProfile = async () => {
@@ -244,8 +250,9 @@ export default function OnboardingPage() {
                     onChange={(e) => handleStateChange(e.target.value)}
                     className="w-full bg-slate-50 text-sm font-semibold border-0 focus:ring-2 focus:ring-emerald-500 rounded-2xl px-4 py-3.5 outline-none"
                   >
-                    <option value="Maharashtra">Maharashtra</option>
-                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    {Object.keys(stateDistricts).map((s) => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
                   </select>
                 </div>
                 <div>
@@ -255,11 +262,7 @@ export default function OnboardingPage() {
                     onChange={(e) => setDistrict(e.target.value)}
                     className="w-full bg-slate-50 text-sm font-semibold border-0 focus:ring-2 focus:ring-emerald-500 rounded-2xl px-4 py-3.5 outline-none"
                   >
-                    {state === 'Maharashtra' ? (
-                      <option value="Wardha">Wardha</option>
-                    ) : (
-                      <option value="Guntur">Guntur</option>
-                    )}
+                    <option value={stateDistricts[state]}>{stateDistricts[state]}</option>
                   </select>
                 </div>
               </div>

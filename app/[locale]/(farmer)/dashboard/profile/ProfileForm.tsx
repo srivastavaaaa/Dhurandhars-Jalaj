@@ -32,13 +32,19 @@ export default function ProfileForm({ farmer }: { farmer: Farmer }) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
+  const stateDistricts: Record<string, string> = {
+    'Maharashtra': 'Wardha',
+    'Andhra Pradesh': 'Guntur',
+    'Telangana': 'Warangal',
+    'Tamil Nadu': 'Coimbatore',
+    'Karnataka': 'Tumkur',
+    'Odisha': 'Cuttack',
+    'Uttar Pradesh': 'Bareilly'
+  };
+
   const handleStateChange = (selectedState: string) => {
     setState(selectedState);
-    if (selectedState === 'Maharashtra') {
-      setDistrict('Wardha');
-    } else if (selectedState === 'Andhra Pradesh') {
-      setDistrict('Guntur');
-    }
+    setDistrict(stateDistricts[selectedState] || '');
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -111,8 +117,9 @@ export default function ProfileForm({ farmer }: { farmer: Farmer }) {
               onChange={(e) => handleStateChange(e.target.value)}
               className="w-full bg-slate-50 text-sm font-semibold border-0 focus:ring-2 focus:ring-emerald-500 rounded-2xl px-4 py-3 outline-none"
             >
-              <option value="Maharashtra">Maharashtra</option>
-              <option value="Andhra Pradesh">Andhra Pradesh</option>
+              {Object.keys(stateDistricts).map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
             </select>
           </div>
           <div>
@@ -122,11 +129,7 @@ export default function ProfileForm({ farmer }: { farmer: Farmer }) {
               onChange={(e) => setDistrict(e.target.value)}
               className="w-full bg-slate-50 text-sm font-semibold border-0 focus:ring-2 focus:ring-emerald-500 rounded-2xl px-4 py-3 outline-none"
             >
-              {state === 'Maharashtra' ? (
-                <option value="Wardha">Wardha</option>
-              ) : (
-                <option value="Guntur">Guntur</option>
-              )}
+              <option value={stateDistricts[state]}>{stateDistricts[state]}</option>
             </select>
           </div>
         </div>
