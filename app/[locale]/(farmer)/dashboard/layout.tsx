@@ -70,11 +70,10 @@ export default function DashboardLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition active:scale-95 ${
-                  isActive
+                className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition active:scale-95 ${isActive
                     ? 'bg-primary text-white shadow-md'
                     : 'text-slate-600 hover:bg-surface-container'
-                }`}
+                  }`}
               >
                 <Icon size={14} />
                 <span>{locale === 'hi' ? item.labelHi : item.label}</span>
@@ -116,9 +115,8 @@ export default function DashboardLayout({
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center space-y-1 text-center transition active:scale-95 ${
-                isActive ? 'text-primary' : 'text-slate-400'
-              }`}
+              className={`flex flex-col items-center space-y-1 text-center transition active:scale-95 ${isActive ? 'text-primary' : 'text-slate-400'
+                }`}
             >
               <Icon size={18} className={isActive ? 'scale-110 text-primary transition' : ''} />
               <span className="text-[9px] font-bold">

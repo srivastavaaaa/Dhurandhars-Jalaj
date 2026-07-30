@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useTranslations, useLocale } from 'next-intl';
 import { Sprout, BookOpen, ShieldCheck, Tractor, Warehouse, HelpCircle, ArrowRight, Languages, Search, Calendar, ExternalLink } from 'lucide-react';
 
 interface Scheme {
@@ -16,6 +17,7 @@ interface Scheme {
 }
 
 export default function MarketingPage() {
+  const locale = useLocale();
   const [schemes, setSchemes] = useState<Scheme[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -96,10 +98,16 @@ export default function MarketingPage() {
             </button>
             <button
               onClick={() => scrollToSection('schemes-catalog')}
-              className="text-primary border-b-4 border-accent pb-1 cursor-pointer"
+              className="text-slate-500 hover:text-primary transition-colors cursor-pointer"
             >
               Govt Schemes
             </button>
+            <Link
+              href={`/${locale}/rentals`}
+              className="text-primary border-b-4 border-accent pb-1 cursor-pointer"
+            >
+              Universal Rentals
+            </Link>
             <button
               onClick={triggerChatbot}
               className="text-slate-500 hover:text-primary transition-colors cursor-pointer"
@@ -110,7 +118,7 @@ export default function MarketingPage() {
 
           <div className="flex items-center gap-3">
             <Link
-              href="/en/onboarding"
+              href={`/${locale}/onboarding`}
               className="bg-primary text-white hover:bg-emerald-900 px-6 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-md"
             >
               SignUp <ArrowRight size={14} />

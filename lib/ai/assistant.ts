@@ -115,21 +115,21 @@ export async function askAssistant({
 }: AskParams): Promise<AskResult> {
   const farmer = farmerId
     ? await prisma.farmer.findUnique({
-        where: { id: farmerId },
-        include: {
-          farms: {
-            include: {
-              crops: true
-            }
+      where: { id: farmerId },
+      include: {
+        farms: {
+          include: {
+            crops: true
           }
         }
-      })
+      }
+    })
     : null;
 
   // 1. Classify Intent
   const classification = classifyIntent(message || '');
   const intent = imageUrl ? 'crop_diagnosis' : classification.intent;
-  
+
   // Base configuration
   const apiKey = process.env.GEMINI_API_KEY || '';
   const isHindi = locale === 'hi';
@@ -208,7 +208,7 @@ export async function askAssistant({
         // Run Gemini Vision
         const visionPrompt = `You are a crop health AI checker. Examine the attached leaf/plant photo. Identify the suspected pest or disease, estimate your diagnosis confidence score (0.0 to 1.0), and list 3 concrete recovery suggestions. Reply strictly in a valid JSON object matching this schema: {"diagnosis": "Disease Name", "confidenceScore": 0.85, "suggestions": ["Suggestion 1", "Suggestion 2", "Suggestion 3"]}`;
         const visionResult = await callGeminiVision(imageUrl, visionPrompt, apiKey);
-        
+
         confidenceScore = visionResult.confidenceScore;
         const activeCrop = farmer?.farms[0]?.crops[0];
 
@@ -315,8 +315,8 @@ export async function askAssistant({
         });
 
         if (matches.length === 0) {
-          reply = isHindi 
-            ? "मुझे आपकी प्रोफ़ाइल से मेल खाने वाली कोई सक्रिय योजना नहीं मिली।" 
+          reply = isHindi
+            ? "मुझे आपकी प्रोफ़ाइल से मेल खाने वाली कोई सक्रिय योजना नहीं मिली।"
             : "I could not find any active schemes matching your profile specifications.";
         } else {
           const schemeList = matches.map(m => `• **${m.scheme.name}** (${m.scheme.level})\n  *Match Score:* ${m.eligibilityScore}%\n  *Documents required:* ${JSON.parse(m.scheme.requiredDocuments).join(', ')}`).join('\n\n');

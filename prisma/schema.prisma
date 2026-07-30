@@ -26,6 +26,9 @@ model Farmer {
   bookings          Booking[]
   notifications     Notification[]
   produceListings   ProduceListing[]
+  ownedRentals      RentalListing[] @relation("OwnedRentals")
+  rentalBookings    RentalBooking[] @relation("RenterBookings")
+  reviewsLeft       RentalReview[]  @relation("ReviewerRelations")
 
   @@index([phone])
   @@index([district])
@@ -221,4 +224,74 @@ model Notification {
   content   String
   sentAt    DateTime @default(now())
   readAt    DateTime?
+}
+
+model RentalListing {
+  id                   String          @id @default(uuid())
+  ownerId              String
+  owner                Farmer          @relation("OwnedRentals", fields: [ownerId], references: [id], onDelete: Cascade)
+  title                String
+  description          String
+  category             String          // "farm" | "tools" | "electronics" | "vehicles" | "other"
+  priceHour            Float?
+  priceDay             Float?
+  priceWeek            Float?
+  location             String
+  district             String
+  state                String
+  imageUrl             String?
+  availabilityCalendar String          @default("[]") // JSON array of booked dates
+  createdAt            DateTime        @default(now())
+  
+  bookings             RentalBooking[]
+  reviews              RentalReview[]
+}
+
+model RentalBooking {
+  id            String         @id @default(uuid())
+  listingId     String
+  listing       RentalListing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  renterId      String
+  renter        Farmer         @relation("RenterBookings", fields: [renterId], references: [id], onDelete: Cascade)
+  startDate     DateTime
+  endDate       DateTime
+  pricingType   String         // "hour" | "day" | "week"
+  totalPrice    Float
+  status        String         // "pending" | "confirmed" | "completed" | "cancelled"
+  paymentStatus String         // "pending" | "paid" | "refunded"
+  createdAt     DateTime       @default(now())
+  
+  messages      RentalChat[]
+  payment       RentalPayment?
+}
+
+model RentalPayment {
+  id          String        @id @default(uuid())
+  bookingId   String        @unique
+  booking     RentalBooking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  amount      Float
+  status      String        // "pending" | "completed" | "failed"
+  txRef       String        @unique
+  createdAt   DateTime      @default(now())
+}
+
+model RentalReview {
+  id         String        @id @default(uuid())
+  listingId  String
+  listing    RentalListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  reviewerId String
+  reviewer   Farmer        @relation("ReviewerRelations", fields: [reviewerId], references: [id], onDelete: Cascade)
+  rating     Int           // 1 to 5 stars
+  comment    String
+  createdAt  DateTime      @default(now())
+}
+
+model RentalChat {
+  id         String        @id @default(uuid())
+  bookingId  String
+  booking    RentalBooking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  senderId   String
+  senderRole String        // "owner" | "renter"
+  message    String
+  createdAt  DateTime      @default(now())
 }
