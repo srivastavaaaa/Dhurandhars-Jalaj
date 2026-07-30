@@ -156,8 +156,8 @@ export default function HarvestAdvisorPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-5 gap-4">
         <div className="space-y-1">
-          <h2 className="text-2xl font-black text-slate-800 flex items-center space-x-2">
-            <Warehouse size={28} className="text-emerald-600" />
+          <h2 className="text-2xl font-black text-primary flex items-center space-x-2">
+            <Warehouse size={28} className="text-secondary" />
             <span>{t('heading')}</span>
           </h2>
           <p className="text-xs text-slate-500 max-w-xl">
@@ -166,7 +166,7 @@ export default function HarvestAdvisorPage() {
         </div>
         <Link
           href="/dashboard"
-          className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 bg-emerald-50 px-4 py-2 rounded-xl text-center"
+          className="text-xs font-semibold text-secondary hover:text-primary bg-accent/20 px-4 py-2 rounded-xl text-center"
         >
           ← Go to Dashboard
         </Link>
@@ -237,7 +237,7 @@ export default function HarvestAdvisorPage() {
                 <div className="pt-2 text-[10px] text-slate-600 font-medium space-y-1.5 border-t">
                   {riskResult?.reasons.map((r, i) => (
                     <div key={i} className="flex items-start space-x-1.5">
-                      <span className="text-emerald-500 mt-0.5">✓</span>
+                      <span className="text-secondary mt-0.5">✓</span>
                       <span className="leading-tight">{r}</span>
                     </div>
                   ))}
@@ -256,7 +256,7 @@ export default function HarvestAdvisorPage() {
                   <span className="text-xs font-bold text-slate-700">33°C (High)</span>
                 </div>
               </div>
-              <div className="bg-white border border-slate-100 rounded-2xl p-4 flex items-center space-x-3 shadow-sm">
+              <div className="bg-surface-lowest border border-surface-highest rounded-2xl p-4 flex items-center space-x-3 shadow-sm">
                 <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
                   <Droplets size={18} />
                 </div>
@@ -272,13 +272,13 @@ export default function HarvestAdvisorPage() {
           <div className="lg:col-span-2 space-y-6">
             
             {/* Price Trend Chart Container */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
+            <div className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between border-b pb-4">
                 <div>
                   <h3 className="font-bold text-slate-800 text-sm">{t('priceTrend')}</h3>
                   <span className="text-[10px] text-slate-400 font-light">{cropName} Mandi Trends</span>
                 </div>
-                <span className="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-semibold">
+                <span className="bg-accent/20 text-secondary text-xs px-2.5 py-1 rounded-full font-semibold">
                   Avg: ₹{Math.round(priceTrend.reduce((acc, p) => acc + p.price, 0) / (priceTrend.length || 1))}
                 </span>
               </div>
@@ -295,7 +295,7 @@ export default function HarvestAdvisorPage() {
                     {/* Polyline connecting points */}
                     <polyline
                       fill="none"
-                      stroke="#059669"
+                      stroke="var(--secondary)"
                       strokeWidth="3.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -312,7 +312,7 @@ export default function HarvestAdvisorPage() {
                     {/* Definitions for gradient */}
                     <defs>
                       <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#10b981" />
+                        <stop offset="0%" stopColor="var(--accent)" />
                         <stop offset="100%" stopColor="#ffffff" />
                       </linearGradient>
                     </defs>
@@ -323,7 +323,7 @@ export default function HarvestAdvisorPage() {
                       const y = chartHeight - padding - ((pt.price - minPrice) * (chartHeight - padding * 2)) / priceRange;
                       return (
                         <g key={index}>
-                          <circle cx={x} cy={y} r="5" fill="#ffffff" stroke="#059669" strokeWidth="3" />
+                          <circle cx={x} cy={y} r="5" fill="#ffffff" stroke="var(--secondary)" strokeWidth="3" />
                           {/* Price Label above point */}
                           <text x={x} y={y - 10} textAnchor="middle" className="fill-slate-700 font-bold text-[9px]">
                             ₹{pt.price}
@@ -348,13 +348,13 @@ export default function HarvestAdvisorPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {facilities.map((fac) => (
-                  <div key={fac.id} className="bg-white border border-slate-100 rounded-3xl p-5 shadow-sm space-y-4 hover:shadow-md transition">
+                  <div key={fac.id} className="bg-surface-lowest border border-surface-highest rounded-3xl p-5 shadow-sm space-y-4 hover:shadow-md transition">
                     <div className="flex justify-between items-start">
                       <div>
                         <h4 className="font-bold text-slate-800 text-sm">{fac.name}</h4>
                         <span className="text-[10px] text-slate-400 font-light">{fac.location}</span>
                       </div>
-                      <span className="bg-emerald-50 text-emerald-700 text-[10px] px-2.5 py-0.5 rounded-full font-semibold flex-shrink-0">
+                      <span className="bg-accent/20 text-secondary text-[10px] px-2.5 py-0.5 rounded-full font-semibold flex-shrink-0">
                         {t('ratePerMonth', { cost: fac.costPerUnit })}
                       </span>
                     </div>
@@ -367,7 +367,7 @@ export default function HarvestAdvisorPage() {
                       
                       <a
                         href={`tel:${fac.contactInfo}`}
-                        className="flex items-center space-x-1 text-emerald-600 hover:text-emerald-700 font-semibold"
+                        className="flex items-center space-x-1 text-secondary hover:text-primary font-semibold"
                       >
                         <Phone size={12} />
                         <span>{fac.contactInfo}</span>

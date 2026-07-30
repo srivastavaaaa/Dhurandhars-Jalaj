@@ -48,16 +48,16 @@ export default function DashboardLayout({
   ];
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-slate-50 pb-20 md:pb-0">
+    <div className="flex-1 flex flex-col min-h-screen bg-background pb-20 md:pb-0">
       {/* Top Navbar for Desktop */}
-      <header className="bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+      <header className="bg-surface border-b border-surface-highest px-6 py-4 flex items-center justify-between sticky top-0 z-30 shadow-sm">
         <div className="flex items-center space-x-2">
-          <div className="p-2 bg-emerald-600 rounded-xl text-white">
+          <div className="p-2 bg-primary rounded-xl text-accent">
             <Sprout size={20} />
           </div>
           <div>
-            <h1 className="text-base font-bold text-slate-800 tracking-tight">KrishiMitra Dashboard</h1>
-            <span className="text-[9px] text-slate-400 font-light block">Sevagram Pilot Hub</span>
+            <h1 className="text-base font-black text-primary tracking-tight">KrishiMitra</h1>
+            <span className="text-[9px] text-secondary font-bold block">Community Hub</span>
           </div>
         </div>
 
@@ -72,8 +72,8 @@ export default function DashboardLayout({
                 href={item.href}
                 className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition active:scale-95 ${
                   isActive
-                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/10'
-                    : 'text-slate-600 hover:bg-slate-50'
+                    ? 'bg-primary text-white shadow-md'
+                    : 'text-slate-600 hover:bg-surface-container'
                 }`}
               >
                 <Icon size={14} />
@@ -87,14 +87,14 @@ export default function DashboardLayout({
         <div className="flex items-center space-x-2">
           <Link
             href={`/${locale}/dashboard/review-queue`}
-            className="text-[10px] font-bold text-slate-500 hover:text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg flex items-center space-x-1"
+            className="text-[10px] font-bold text-slate-500 hover:text-slate-700 bg-surface-container px-3 py-1.5 rounded-lg flex items-center space-x-1"
           >
             <ShieldCheck size={12} />
             <span>Agent Desk</span>
           </Link>
           <Link
             href={`/${locale}/admin/analytics`}
-            className="text-[10px] font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg flex items-center space-x-1"
+            className="text-[10px] font-bold text-secondary hover:text-primary bg-accent/20 px-3 py-1.5 rounded-lg flex items-center space-x-1"
           >
             <BarChart3 size={12} />
             <span>Admin</span>
@@ -108,7 +108,7 @@ export default function DashboardLayout({
       </main>
 
       {/* Bottom Navigation for Mobile Devices */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 flex justify-around py-2.5 z-40 shadow-2xl">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-surface-highest flex justify-around py-2.5 z-40 shadow-2xl">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -117,10 +117,10 @@ export default function DashboardLayout({
               key={item.href}
               href={item.href}
               className={`flex flex-col items-center space-y-1 text-center transition active:scale-95 ${
-                isActive ? 'text-emerald-600' : 'text-slate-400'
+                isActive ? 'text-primary' : 'text-slate-400'
               }`}
             >
-              <Icon size={18} className={isActive ? 'scale-110 transition' : ''} />
+              <Icon size={18} className={isActive ? 'scale-110 text-primary transition' : ''} />
               <span className="text-[9px] font-bold">
                 {locale === 'hi' ? item.labelHi : item.label}
               </span>

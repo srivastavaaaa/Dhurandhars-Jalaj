@@ -142,8 +142,8 @@ export default function EquipmentPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-5 gap-4">
         <div className="space-y-1">
-          <h2 className="text-2xl font-black text-slate-800 flex items-center space-x-2">
-            <Tractor size={28} className="text-emerald-600" />
+          <h2 className="text-2xl font-black text-primary flex items-center space-x-2">
+            <Tractor size={28} className="text-secondary" />
             <span>{t('heading')}</span>
           </h2>
           <p className="text-xs text-slate-500 max-w-xl">
@@ -152,20 +152,20 @@ export default function EquipmentPage() {
         </div>
         <Link
           href="/dashboard"
-          className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 bg-emerald-50 px-4 py-2 rounded-xl text-center"
+          className="text-xs font-semibold text-secondary hover:text-primary bg-accent/20 px-4 py-2 rounded-xl text-center"
         >
           ← Go to Dashboard
         </Link>
       </div>
 
       {/* Filter Form */}
-      <form onSubmit={handleSearch} className="bg-white border border-slate-100 p-4 rounded-3xl shadow-sm flex flex-col md:flex-row items-center gap-4">
+      <form onSubmit={handleSearch} className="bg-surface-lowest border border-surface-highest p-4 rounded-3xl shadow-sm flex flex-col md:flex-row items-center gap-4">
         <div className="w-full md:flex-1 relative">
           <MapPin size={18} className="absolute left-4 top-3.5 text-slate-400" />
           <select
             value={district}
             onChange={(e) => setDistrict(e.target.value)}
-            className="w-full bg-slate-50 text-xs font-semibold border-0 focus:ring-2 focus:ring-emerald-500 rounded-2xl pl-12 pr-4 py-3.5 outline-none appearance-none"
+            className="w-full bg-slate-50 text-xs font-semibold border-0 focus:ring-2 focus:ring-secondary rounded-2xl pl-12 pr-4 py-3.5 outline-none appearance-none"
           >
             <option value="Wardha">Wardha District (Maharashtra)</option>
             <option value="Guntur">Guntur District (Andhra Pradesh)</option>
@@ -178,13 +178,13 @@ export default function EquipmentPage() {
             type="date"
             value={filterDate}
             onChange={(e) => setFilterDate(e.target.value)}
-            className="w-full bg-slate-50 text-xs font-semibold border-0 focus:ring-2 focus:ring-emerald-500 rounded-2xl pl-12 pr-4 py-3.5 outline-none"
+            className="w-full bg-slate-50 text-xs font-semibold border-0 focus:ring-2 focus:ring-secondary rounded-2xl pl-12 pr-4 py-3.5 outline-none"
           />
         </div>
 
         <button
           type="submit"
-          className="w-full md:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-6 py-4 rounded-2xl shadow-md transition flex items-center justify-center space-x-1.5 active:scale-95"
+          className="w-full md:w-auto bg-primary hover:bg-emerald-950 text-white font-bold text-xs px-6 py-4 rounded-2xl shadow-md transition flex items-center justify-center space-x-1.5 active:scale-95"
         >
           <Search size={16} />
           <span>Search</span>
@@ -199,7 +199,7 @@ export default function EquipmentPage() {
             onClick={() => handleCategoryClick(type)}
             className={`flex-shrink-0 text-xs font-semibold px-4 py-2 rounded-full border transition active:scale-95 ${
               selectedType === type
-                ? 'bg-emerald-600 border-emerald-600 text-white shadow-sm'
+                ? 'bg-secondary border-secondary text-white shadow-sm'
                 : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
             }`}
           >
@@ -212,14 +212,14 @@ export default function EquipmentPage() {
       {loading ? (
         <p className="text-center py-10 text-slate-500 text-sm">{tc('loading')}</p>
       ) : listings.length === 0 ? (
-        <div className="bg-white border border-slate-100 rounded-3xl p-12 text-center text-slate-500 space-y-2">
+        <div className="bg-surface-lowest border border-surface-highest rounded-3xl p-12 text-center text-slate-500 space-y-2">
           <Tractor size={48} className="text-slate-300 mx-auto" />
           <p className="text-xs font-light">No rentals matching your criteria in this district.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {listings.map((item) => (
-            <div key={item.id} className="bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
+            <div key={item.id} className="bg-surface-lowest border border-surface-highest rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={item.imageUrl || 'https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=400'}
@@ -233,7 +233,7 @@ export default function EquipmentPage() {
                     <span className="text-[10px] bg-slate-100 text-slate-700 font-bold px-2.5 py-0.5 rounded-full">
                       {item.source.toUpperCase()} listing
                     </span>
-                    <span className="text-emerald-600 text-sm font-black">
+                    <span className="text-secondary text-sm font-black">
                       ₹{item.pricePerDay} / day
                     </span>
                   </div>
@@ -246,7 +246,7 @@ export default function EquipmentPage() {
 
                 <button
                   onClick={() => setSelectedListing(item)}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl transition flex items-center justify-center space-x-1.5 active:scale-95"
+                  className="w-full bg-primary hover:bg-emerald-950 text-white font-bold text-xs py-3 rounded-xl transition flex items-center justify-center space-x-1.5 active:scale-95"
                 >
                   <span>{t('bookNow')}</span>
                   <ChevronRight size={14} />
@@ -260,7 +260,7 @@ export default function EquipmentPage() {
       {/* Booking Dialog Modal */}
       {selectedListing && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl w-full max-w-md p-6 border border-slate-100 shadow-2xl relative space-y-6 animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-surface-lowest rounded-3xl w-full max-w-md p-6 border border-surface-highest shadow-2xl relative space-y-6 animate-in fade-in zoom-in-95 duration-200">
             <button
               onClick={() => setSelectedListing(null)}
               className="absolute right-4 top-4 text-slate-400 hover:text-slate-600"
@@ -296,7 +296,7 @@ export default function EquipmentPage() {
                       type="date"
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
-                      className="w-full bg-slate-50 text-xs font-semibold border-0 focus:ring-2 focus:ring-emerald-500 rounded-xl px-3 py-3 outline-none"
+                      className="w-full bg-slate-50 text-xs font-semibold border-0 focus:ring-2 focus:ring-secondary rounded-xl px-3 py-3 outline-none"
                     />
                   </div>
                   <div>
@@ -305,22 +305,22 @@ export default function EquipmentPage() {
                       type="date"
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
-                      className="w-full bg-slate-50 text-xs font-semibold border-0 focus:ring-2 focus:ring-emerald-500 rounded-xl px-3 py-3 outline-none"
+                      className="w-full bg-slate-50 text-xs font-semibold border-0 focus:ring-2 focus:ring-secondary rounded-xl px-3 py-3 outline-none"
                     />
                   </div>
                 </div>
 
                 {startDate && endDate && (
-                  <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex items-center justify-between text-xs font-bold text-slate-800">
+                  <div className="bg-surface-low rounded-2xl p-4 border border-surface-highest flex items-center justify-between text-xs font-bold text-slate-800">
                     <span className="font-semibold text-slate-500">Calculated Quote:</span>
-                    <span className="text-emerald-700 text-sm">₹{calculateTotalPrice()}</span>
+                    <span className="text-secondary text-sm">₹{calculateTotalPrice()}</span>
                   </div>
                 )}
 
                 <button
                   onClick={submitBooking}
                   disabled={bookingProgress || !startDate || !endDate}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-lg transition active:scale-95 disabled:opacity-50 text-xs"
+                  className="w-full bg-primary hover:bg-emerald-950 text-white font-bold py-4 rounded-xl shadow-lg transition active:scale-95 disabled:opacity-50 text-xs"
                 >
                   {bookingProgress ? tc('loading') : 'Confirm Rental Booking'}
                 </button>

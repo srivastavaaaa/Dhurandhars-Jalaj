@@ -34,8 +34,8 @@ export default async function DashboardPage() {
 
   if (!farmer) {
     return (
-      <div className="flex-1 flex flex-col justify-center items-center p-8 bg-slate-50 min-h-[70vh]">
-        <div className="max-w-md w-full bg-white rounded-3xl border border-slate-100 p-8 shadow-md text-center space-y-4">
+      <div className="flex-1 flex flex-col justify-center items-center p-8 bg-background min-h-[70vh]">
+        <div className="max-w-md w-full bg-surface-lowest border border-surface-highest p-8 shadow-md text-center space-y-4">
           <ShieldCheck size={48} className="text-red-500 mx-auto" />
           <h3 className="text-lg font-bold text-slate-800 font-black">No Profile Registered</h3>
           <p className="text-xs text-slate-500 font-light">
@@ -43,7 +43,7 @@ export default async function DashboardPage() {
           </p>
           <Link
             href="/onboarding"
-            className="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl transition"
+            className="block w-full bg-primary hover:bg-emerald-950 text-white font-bold py-3.5 rounded-2xl transition"
           >
             Register Profile
           </Link>
@@ -60,9 +60,9 @@ export default async function DashboardPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-10 space-y-8">
       {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-emerald-800 to-emerald-950 rounded-3xl p-6 md:p-8 text-white flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden shadow-lg shadow-emerald-900/10">
+      <div className="bg-gradient-to-r from-primary to-emerald-950 rounded-3xl p-6 md:p-8 text-white flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden shadow-lg">
         <div className="space-y-1 relative z-10">
-          <span className="text-[10px] bg-emerald-700/50 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider text-emerald-300">
+          <span className="text-[10px] bg-secondary/40 border border-accent/30 px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider text-accent">
             Farming Hub
           </span>
           <h2 className="text-2xl md:text-3xl font-black tracking-tight">Namaste, {farmer.name}!</h2>
@@ -80,14 +80,14 @@ export default async function DashboardPage() {
           </Link>
           <Link
             href="/onboarding"
-            className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-md"
+            className="bg-accent hover:bg-accent/80 text-primary text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-md"
           >
             Switch Language
           </Link>
         </div>
 
         {/* Decorative elements */}
-        <div className="absolute right-0 bottom-0 translate-y-6 translate-x-6 text-emerald-700/15 pointer-events-none">
+        <div className="absolute right-0 bottom-0 translate-y-6 translate-x-6 text-secondary/10 pointer-events-none">
           <Sprout size={180} />
         </div>
       </div>
@@ -97,7 +97,7 @@ export default async function DashboardPage() {
         {/* Schemes Match Card */}
         <Link
           href="/dashboard/schemes"
-          className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition flex items-start justify-between group"
+          className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm hover:shadow-md transition flex items-start justify-between group"
         >
           <div className="space-y-4">
             <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
@@ -116,7 +116,7 @@ export default async function DashboardPage() {
         {/* Post-Harvest advisor Card */}
         <Link
           href="/dashboard/harvest-advisor"
-          className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition flex items-start justify-between group"
+          className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm hover:shadow-md transition flex items-start justify-between group"
         >
           <div className="space-y-4">
             <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center">
@@ -137,7 +137,7 @@ export default async function DashboardPage() {
         {/* Equipment Rentals Card */}
         <Link
           href="/dashboard/equipment"
-          className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition flex items-start justify-between group"
+          className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm hover:shadow-md transition flex items-start justify-between group"
         >
           <div className="space-y-4">
             <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center">
@@ -159,9 +159,9 @@ export default async function DashboardPage() {
         
         {/* Crop Diagnostics & Bio Summary */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
+          <div className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm space-y-4">
             <h3 className="text-sm font-bold text-slate-800 border-b pb-3 flex items-center space-x-2">
-              <Sprout size={18} className="text-emerald-600" />
+              <Sprout size={18} className="text-secondary" />
               <span>Active Crop Status</span>
             </h3>
             
@@ -177,7 +177,7 @@ export default async function DashboardPage() {
                 </div>
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-slate-400">Growth Stage:</span>
-                  <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold text-[10px]">{crop.currentStage}</span>
+                  <span className="bg-accent/20 text-secondary px-2 py-0.5 rounded-full font-bold text-[10px]">{crop.currentStage}</span>
                 </div>
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-slate-400">Health Index:</span>
@@ -198,9 +198,9 @@ export default async function DashboardPage() {
 
         {/* Notifications and Alerts List */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
+          <div className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm space-y-4">
             <h3 className="text-sm font-bold text-slate-800 border-b pb-3 flex items-center space-x-2">
-              <Bell size={18} className="text-emerald-600" />
+              <Bell size={18} className="text-secondary" />
               <span>Notifications & Action Alerts</span>
             </h3>
             

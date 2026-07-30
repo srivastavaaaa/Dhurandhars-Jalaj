@@ -44,6 +44,17 @@ export default function ChatWidget() {
     }
   }, [messages]);
 
+  // Listen for external open triggers
+  useEffect(() => {
+    const handleOpen = () => {
+      setIsOpen(true);
+    };
+    window.addEventListener('open-chatbot', handleOpen);
+    return () => {
+      window.removeEventListener('open-chatbot', handleOpen);
+    };
+  }, []);
+
   // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
