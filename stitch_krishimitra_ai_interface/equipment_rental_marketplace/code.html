@@ -1,0 +1,406 @@
+<!DOCTYPE html><html class="light" lang="en" style="width: 1280px; height: 2140px; overflow: hidden; position: relative;"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Equipment Rental - KrishiMitra AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#add53e",
+                        "surface-container-low": "#f2f4ed",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#edefe8",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#356850",
+                        "primary-fixed": "#b8efd0",
+                        "secondary-fixed": "#c9f258",
+                        "on-tertiary-container": "#cb9900",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#2d2000",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f8faf3",
+                        "tertiary-container": "#483400",
+                        "inverse-primary": "#9cd2b5",
+                        "outline": "#717973",
+                        "inverse-on-surface": "#eff2eb",
+                        "tertiary-fixed-dim": "#fabd00",
+                        "on-surface-variant": "#404943",
+                        "surface-dim": "#d9dbd4",
+                        "on-tertiary-fixed": "#261a00",
+                        "on-tertiary-fixed-variant": "#5b4300",
+                        "surface-container-high": "#e7e9e2",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#9cd2b5",
+                        "surface-variant": "#e1e3dd",
+                        "tertiary-fixed": "#ffdf9e",
+                        "on-primary": "#ffffff",
+                        "on-background": "#191c18",
+                        "on-primary-container": "#77ac90",
+                        "primary-container": "#06402b",
+                        "on-secondary-fixed-variant": "#3b4d00",
+                        "inverse-surface": "#2e312d",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#c9f258",
+                        "on-secondary-fixed": "#161f00",
+                        "on-secondary-container": "#546d00",
+                        "outline-variant": "#c0c9c1",
+                        "secondary": "#4f6600",
+                        "primary": "#002819",
+                        "surface-bright": "#f8faf3",
+                        "on-primary-fixed-variant": "#1b503a",
+                        "on-surface": "#191c18",
+                        "on-primary-fixed": "#002114",
+                        "surface-container-highest": "#e1e3dd",
+                        "background": "#f8faf3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "container-margin-mobile": "16px",
+                        "container-margin-desktop": "80px",
+                        "section-gap-lg": "64px",
+                        "base": "8px",
+                        "touch-target-min": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-lg": ["Be Vietnam Pro"],
+                        "body-md": ["Be Vietnam Pro"],
+                        "label-bold": ["Be Vietnam Pro"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-bold": ["14px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(6, 64, 43, 0.08);
+        }
+        body {
+            background-color: #f8faf3;
+            color: #191c18;
+        }
+        .glass-badge {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .touch-target {
+            min-height: 48px;
+            min-width: 48px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="bg-surface dark:bg-surface-dim shadow-sm docked full-width top-0 z-50 sticky">
+<nav class="flex justify-between items-center py-4 w-full max-w-7xl mx-auto">
+<div class="h-24 flex items-center justify-start"><a href="/" class="block h-full"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFc4MsjZDyPgJw2X7yKuKsk-JlPjToC1brgf-zaRi8i4mi-49QNiEzyavWj4LYdTWjTMv4t06xZ2f8Zr9U7xiB8aq09vTuZIyIW5EIfWz4e6mP8BOkl6N-LW4eH-eniMaitqi_NX1eljBDAfy5EBg81xcXfnPhgfupvD0wUNWuZQ5h4WBUtTN_VqCqvTkc83POrXMk3yjrcd7uDZrGApRvweAqRv7SJHNtXBFxjpUeJiWOtWsz6i81efxD3fADzwL_m_s" alt="KrishiMitra AI Logo" class="h-24 object-contain transition-transform active:scale-95 cursor-pointer"></a></div>
+<div class="hidden md:flex gap-8 items-center">
+
+<a class="text-primary dark:text-secondary-fixed-dim font-bold border-b-4 border-secondary-fixed-dim pb-2" href="#">Marketplace</a>
+<a class="text-on-surface-variant dark:text-surface-variant px-2 hover:bg-surface-container-high transition-colors duration-200" href="#">Govt Schemes</a>
+<a class="text-on-surface-variant dark:text-surface-variant px-2 hover:bg-surface-container-high transition-colors duration-200" href="#">AI Assistant</a>
+</div>
+<div class="flex gap-4 items-center">
+
+
+</div>
+</nav>
+</header>
+<div class="flex max-w-7xl mx-auto relative">
+<!-- Side Navigation (Desktop Only) -->
+<aside class="hidden md:flex flex-col h-[calc(100vh-80px)] sticky top-[80px] w-72 py-8 bg-surface-container-low dark:bg-surface-dim border-r border-outline-variant">
+<div class="px-6 mb-8 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">person</span>
+</div>
+<div>
+<h3 class="font-bold text-on-surface">Ramesh Kumar</h3>
+<p class="text-sm text-on-surface-variant">Village: Sonipat, HR</p>
+</div>
+</div>
+<nav class="flex-grow">
+<ul class="space-y-1">
+<li class=""><a class="flex items-center gap-4 text-on-surface-variant dark:text-surface-variant px-6 py-4 hover:bg-surface-container-highest transition-colors" href="#"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>
+<li class=""><a class="flex items-center gap-4 bg-secondary-fixed dark:bg-secondary-container text-on-secondary-fixed font-bold rounded-r-full mr-4 px-6 py-4 transition-all active:translate-x-1" href="#"><span class="material-symbols-outlined">cloud_download</span>Equipment Rental</a></li>
+<li class=""><a class="flex items-center gap-4 text-on-surface-variant dark:text-surface-variant px-6 py-4 hover:bg-surface-container-highest transition-colors" href="#"><span class="material-symbols-outlined">smart_toy</span>AI Assistant</a></li>
+<li class=""><a class="flex items-center gap-4 text-on-surface-variant dark:text-surface-variant px-6 py-4 hover:bg-surface-container-highest transition-colors" href="#"><span class="material-symbols-outlined">trending_up</span>Market Prices</a></li>
+<li class=""><a class="flex items-center gap-4 text-on-surface-variant dark:text-surface-variant px-6 py-4 hover:bg-surface-container-highest transition-colors" href="#"><span class="material-symbols-outlined">account_balance</span>Government Schemes</a></li>
+<li class=""><a class="flex items-center gap-4 text-on-surface-variant dark:text-surface-variant px-6 py-4 hover:bg-surface-container-highest transition-colors" href="#"><span class="material-symbols-outlined">help</span>Support</a></li>
+</ul>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full py-4 bg-primary-container text-on-primary-container rounded-xl font-bold flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">chat</span>
+                    WhatsApp Support
+                </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-grow px-gutter md:px-12 py-8 mb-24 md:mb-0">
+<!-- Header & Filter Bar -->
+<section class="mb-10">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div>
+<span class="inline-block px-3 py-1 bg-secondary-fixed text-on-secondary-fixed text-xs font-bold rounded-full mb-2">LOCAL SERVICE</span>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Equipment Rental</h1>
+<p class="text-on-surface-variant max-w-xl">Find reliable tractors, harvesters, and tools from verified local farmers near Sonipat.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-surface-container-highest text-on-surface p-3 rounded-xl flex items-center justify-center touch-target">
+<span class="material-symbols-outlined">sort</span>
+</button>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg touch-target">
+<span class="material-symbols-outlined">filter_list</span>
+                            All Filters
+                        </button>
+</div>
+</div>
+<!-- Horizontal Filter Chips -->
+<div class="flex gap-3 overflow-x-auto pb-4 scrollbar-hide">
+<button class="whitespace-nowrap px-6 py-2 bg-secondary-fixed text-on-secondary-fixed font-bold rounded-full">Near Me (5km)</button>
+<button class="whitespace-nowrap px-6 py-2 bg-surface-container text-on-surface-variant rounded-full border border-outline-variant">Price: Low to High</button>
+<button class="whitespace-nowrap px-6 py-2 bg-surface-container text-on-surface-variant rounded-full border border-outline-variant">Tractors Only</button>
+<button class="whitespace-nowrap px-6 py-2 bg-surface-container text-on-surface-variant rounded-full border border-outline-variant">Harvesters</button>
+<button class="whitespace-nowrap px-6 py-2 bg-surface-container text-on-surface-variant rounded-full border border-outline-variant">Irrigation Pumps</button>
+</div>
+</section>
+<!-- Equipment Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="bg-white rounded-3xl overflow-hidden card-shadow group transition-all duration-300 hover:-translate-y-2">
+<div class="relative h-64">
+<img class="w-full h-full object-cover" data-alt="A large modern red tractor sitting in a sun-drenched golden wheat field during harvest. High-contrast lighting highlights the metallic textures of the machine. The style is professional commercial photography with a warm, earthy rural tone reflecting growth and prosperity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVgxixZC3P6XHJnvr-vief0ByudHMoOqxOfKnD6k7ePOJOgiXAAONyZIsP-GyQjrKvVxqExHCJTAuiKoyDFqOd576h9I_uQWwrvRcicYPXN_uSm_LXrLuhrM_MNi-TFNuirnE3nbWUjxEjRfl1styUoM8Di9f90bV7RbOEU6g5rLfElywn-vKw5s3PLCZvVshfk9bmzmtE8cvDIfdDKJWVuYju9yFtBFlJWEKlIGaJTcfUUDuXJ7Vs6w">
+<div class="absolute top-4 right-4 glass-badge px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span> 2.4 km away
+                        </div>
+<div class="absolute bottom-4 left-4">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider shadow-sm">Verified Owner</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-primary">Mahindra Novo 755 DI</h3>
+<div class="flex items-center text-on-tertiary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-bold ml-1">4.8</span>
+</div>
+</div>
+<p class="text-on-surface-variant mb-6">Heavy-duty tractor suitable for deep plowing and large fields.</p>
+<div class="flex items-center justify-between border-t border-surface-container-highest pt-6">
+<div>
+<span class="text-label-bold font-label-bold text-on-surface-variant uppercase">Starting From</span>
+<div class="text-headline-md font-bold text-primary">₹2,500<span class="text-sm font-normal text-on-surface-variant">/day</span></div>
+</div>
+<button class="bg-secondary-fixed text-on-secondary-fixed px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-secondary-container transition-colors touch-target">
+                                Book Now
+                                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white rounded-3xl overflow-hidden card-shadow group transition-all duration-300 hover:-translate-y-2">
+<div class="relative h-64">
+<img class="w-full h-full object-cover" data-alt="A professional green and yellow combine harvester working in a vast, vibrant agricultural landscape under a clear blue sky. The scene is bright and airy with high-key lighting. The harvester is depicted in motion, capturing the efficiency and modern technological advancement of the farm." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBepCumda--YoeZHLIm4ODeaTt3MKM4jSLU45bmM7yn0v64Q1RrgZboR42x9t11qI-gEpBOshOYsNNQIkzCsMurpxQyAWmdHbQYXd8cLUrIMo_xPSPUW1V7aXAuI6pv6AjLdAs6C8wrKLJ-QKDJvCUoz2Vusap83EzS21Gcldzw0yJqdkMcFtI0d_7DrCY7bTrw5WFxP6OLECtGi_ljOWpJVYr3DfJgwpgl2IjlsUtiUOI9z5fHU1EJqg">
+<div class="absolute top-4 right-4 glass-badge px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span> 4.1 km away
+                        </div>
+<div class="absolute bottom-4 left-4">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider shadow-sm">Discounted</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-primary">John Deere W70</h3>
+<div class="flex items-center text-on-tertiary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-bold ml-1">4.9</span>
+</div>
+</div>
+<p class="text-on-surface-variant mb-6">Multi-crop combine harvester with high fuel efficiency.</p>
+<div class="flex items-center justify-between border-t border-surface-container-highest pt-6">
+<div>
+<span class="text-label-bold font-label-bold text-on-surface-variant uppercase">Starting From</span>
+<div class="text-headline-md font-bold text-primary">₹5,200<span class="text-sm font-normal text-on-surface-variant">/day</span></div>
+</div>
+<button class="bg-secondary-fixed text-on-secondary-fixed px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-secondary-container transition-colors touch-target">
+                                Book Now
+                                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white rounded-3xl overflow-hidden card-shadow group transition-all duration-300 hover:-translate-y-2">
+<div class="relative h-64">
+<img class="w-full h-full object-cover" data-alt="Close-up of a modern rotary tiller attached to a tractor in a rich, dark-soiled field. The lighting is soft and warm, suggesting late afternoon golden hour. Focus is on the sharp, sturdy blades of the machine, representing tactile quality and reliable agricultural equipment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPV5wjfdUrkOIILB4CVx8tP3WjiBWY9ixrxGcCoFRQC6QL1uK3Tj6wXTq2SHQb-IuTiPWpICM3bbABt58Dtuav4WblhKXJQ9Mu0Fz-gNJFBjQQLSMdTugTAo_pBVJ9Bg3A4-mTrGTvYOViGL4-eRZ96o6uahjf1nJDsU9edHN6ZShgApgaGlIhpmmAeOezhb9ebFXad72y7qfvBAeZzSkCoDmrBhsdrxA0bjkmUtSIjHDflaQbsnFzFg">
+<div class="absolute top-4 right-4 glass-badge px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span> 1.8 km away
+                        </div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-primary">Sonalika Rotavator</h3>
+<div class="flex items-center text-on-tertiary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-bold ml-1">4.5</span>
+</div>
+</div>
+<p class="text-on-surface-variant mb-6">6-feet wide rotary tiller for excellent soil preparation.</p>
+<div class="flex items-center justify-between border-t border-surface-container-highest pt-6">
+<div>
+<span class="text-label-bold font-label-bold text-on-surface-variant uppercase">Starting From</span>
+<div class="text-headline-md font-bold text-primary">₹1,200<span class="text-sm font-normal text-on-surface-variant">/day</span></div>
+</div>
+<button class="bg-secondary-fixed text-on-secondary-fixed px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-secondary-container transition-colors touch-target">
+                                Book Now
+                                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-white rounded-3xl overflow-hidden card-shadow group transition-all duration-300 hover:-translate-y-2">
+<div class="relative h-64">
+<img class="w-full h-full object-cover" data-alt="A powerful diesel-powered irrigation pump system set up near a pristine river bank. Lush green vegetation surrounds the equipment. The lighting is bright and sunny, highlighting the functionality of the water delivery system in a modern rural setting. Professional corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcwqA1hdHva8gW3cszPUvVhjv_TpAG81OwptG26Ls_E5M_Hwgf4s1QdP_GbuHKNPZllBOx83qHGx7lVvSiXewsOfF8V-vRwfVZCwp-us2s3T3aPyZoVAJOr5B6ILHRpzjJcp75kdh4StC8YYDtfNEE3drC82chOXFUZGcxo4hOoeqynT5Pw1Iib3F5Bnn8I1BVgucPzVD9pxGpTv5YPK1pnTK8AiYES12MT52sTfxCZRr0yl_vkxrWow">
+<div class="absolute top-4 right-4 glass-badge px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span> 0.9 km away
+                        </div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-primary">Kirloskar Diesel Pump</h3>
+<div class="flex items-center text-on-tertiary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-bold ml-1">4.7</span>
+</div>
+</div>
+<p class="text-on-surface-variant mb-6">10HP diesel engine pump for long-duration field irrigation.</p>
+<div class="flex items-center justify-between border-t border-surface-container-highest pt-6">
+<div>
+<span class="text-label-bold font-label-bold text-on-surface-variant uppercase">Starting From</span>
+<div class="text-headline-md font-bold text-primary">₹800<span class="text-sm font-normal text-on-surface-variant">/day</span></div>
+</div>
+<button class="bg-secondary-fixed text-on-secondary-fixed px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-secondary-container transition-colors touch-target">
+                                Book Now
+                                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State / Load More (Concept) -->
+<div class="mt-16 flex flex-col items-center justify-center py-12 px-6 bg-surface-container-low rounded-3xl border-2 border-dashed border-outline-variant">
+<span class="material-symbols-outlined text-5xl text-outline mb-4">search_off</span>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-2">Can't find what you need?</h4>
+<p class="text-on-surface-variant text-center max-w-sm mb-8">Tell us what equipment you're looking for and we'll alert you when it's available nearby.</p>
+<button class="bg-primary-container text-on-primary-container px-8 py-4 rounded-xl font-bold flex items-center gap-3">
+                    Post a Request
+                    <span class="material-symbols-outlined">add_circle</span>
+</button>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-primary dark:bg-primary-container w-full py-12 px-gutter md:px-20 flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-8 mt-12">
+
+<div class="flex gap-8">
+<a class="text-on-primary/80 hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-primary/80 hover:text-secondary-fixed transition-colors" href="#">Terms of Service</a>
+<a class="text-on-primary/80 hover:text-secondary-fixed transition-colors" href="#">Partner with Us</a>
+</div>
+<div class="text-on-primary/60 text-sm">&nbsp;KrishiMitra , Empowering Indian Farmers.</div>
+</footer>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-surface-container dark:bg-inverse-surface md:hidden rounded-t-xl shadow-[0_-4px_10px_rgba(6,64,43,0.08)]">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2">
+<span class="material-symbols-outlined">home</span>
+<span class="text-xs font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-fixed text-on-secondary-fixed rounded-2xl px-6 py-2 scale-95">
+<span class="material-symbols-outlined">agriculture</span>
+<span class="text-xs font-bold">Rent</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2">
+<span class="material-symbols-outlined">forum</span>
+<span class="text-xs font-bold">AI Chat</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2">
+<span class="material-symbols-outlined">assignment_turned_in</span>
+<span class="text-xs font-bold">Schemes</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2">
+<span class="material-symbols-outlined">person</span>
+<span class="text-xs font-bold">Profile</span>
+</button>
+</nav>
+<script>
+        // Simple scroll behavior for header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+
+        // Toggle Active State for mobile nav
+        const mobileNavButtons = document.querySelectorAll('nav.fixed button');
+        mobileNavButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                mobileNavButtons.forEach(b => {
+                    b.classList.remove('bg-secondary-fixed', 'text-on-secondary-fixed', 'rounded-2xl', 'px-6', 'scale-95');
+                    b.classList.add('text-on-surface-variant', 'px-4');
+                });
+                btn.classList.add('bg-secondary-fixed', 'text-on-secondary-fixed', 'rounded-2xl', 'px-6', 'scale-95');
+                btn.classList.remove('text-on-surface-variant', 'px-4');
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>
