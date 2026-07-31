@@ -51,7 +51,13 @@ export async function GET(
       orderBy: { createdAt: 'desc' }
     });
 
-    return NextResponse.json({ renterBookings, ownerBookings });
+    // 3. Listings owned by this farmer
+    const ownedListings = await prisma.rentalListing.findMany({
+      where: { ownerId: farmerId },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    return NextResponse.json({ renterBookings, ownerBookings, ownedListings });
   } catch (error: any) {
     console.error('Error fetching farmer bookings:', error);
     return NextResponse.json({ error: 'Failed to fetch bookings ledger' }, { status: 500 });

@@ -16,6 +16,13 @@ interface Farmer {
 interface RentalListing {
   id: string;
   title: string;
+  description?: string;
+  category: string;
+  priceHour: number | null;
+  priceDay: number | null;
+  priceWeek: number | null;
+  location: string;
+  district: string;
   imageUrl: string | null;
   owner: Farmer;
 }
@@ -48,11 +55,12 @@ export default function RentalsHistoryPage() {
   const locale = useLocale();
   const [userId, setUserId] = useState<string | null>(null);
   
-  // Tabs: 'renter' or 'owner'
-  const [activeTab, setActiveTab] = useState<'renter' | 'owner'>('renter');
+  // Tabs: 'renter' | 'owner' | 'listings'
+  const [activeTab, setActiveTab] = useState<'renter' | 'owner' | 'listings'>('renter');
   
   const [renterBookings, setRenterBookings] = useState<RentalBooking[]>([]);
   const [ownerBookings, setOwnerBookings] = useState<RentalBooking[]>([]);
+  const [ownedListings, setOwnedListings] = useState<RentalListing[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Modal: Review
@@ -90,33 +98,31 @@ export default function RentalsHistoryPage() {
   const fetchData = async (fid: string) => {
     setLoading(true);
     try {
-      // Fetch both buyer listings and seller listings
-      const res = await fetch(`/api/farmers/${fid}`);
-      if (res.ok) {
-        const data = await res.json();
-        
-        // renterBookings are bookings where renterId == fid
-        // ownerBookings are bookings on items owned by fid
-        // Let's call separate API fetchers or custom filtering:
-        // Wait, we can fetch all bookings or farmer specific bookings.
-        // Let's query backend or write a custom loader. Let's load them via GET /api/farmers/[id] which returns bookings!
-        // Wait! Let's check what `api/farmers/[id]` returns. We can also fetch them directly by calling database endpoints.
-        // Wait, let's write a simple helper endpoint to get farmer bookings:
-        // We can just query `RentalBooking` records where renterId == fid, or listing.ownerId == fid.
-        // Let's create `app/api/rentals/bookings/farmer/[farmerId]/route.ts` to get both in one request! That is extremely clean.
-      }
-      
-      // For now, let's fetch from the custom endpoint we're going to create
       const resB = await fetch(`/api/rentals/bookings/farmer/${fid}`);
       if (resB.ok) {
         const data = await resB.json();
         setRenterBookings(data.renterBookings || []);
         setOwnerBookings(data.ownerBookings || []);
+        setOwnedListings(data.ownedListings || []);
       }
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteListing = async (listingId: string) => {
+    if (!confirm('Are you sure you want to delete this listing? All active bookings for it will be cancelled.')) return;
+    try {
+      const res = await fetch(`/api/rentals?id=${listingId}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) {
+        if (userId) fetchData(userId);
+      }
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -296,17 +302,27 @@ export default function RentalsHistoryPage() {
         >
           Requests on My Listings (Owner)
         </button>
+        <button
+          onClick={() => setActiveTab('listings')}
+          className={`flex-1 py-3 text-xs font-bold text-center border-b-2 transition ${
+            activeTab === 'listings'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-slate-400 hover:text-slate-600'
+          }`}
+        >
+          My Posted Listings
+        </button>
       </div>
 
       {/* List */}
       {loading ? (
         <p className="text-center py-10 text-slate-500 text-sm">Loading bookings ledger...</p>
-      ) : activeBookingsList.length === 0 ? (
+      ) : activeTab !== 'listings' && activeBookingsList.length === 0 ? (
         <div className="bg-surface-lowest border border-surface-highest rounded-3xl p-12 text-center text-slate-500 max-w-md mx-auto space-y-2">
           <Calendar size={48} className="text-slate-300 mx-auto" />
           <p className="text-xs font-light">No bookings found in this section.</p>
         </div>
-      ) : (
+      ) : activeTab !== 'listings' ? (
         <div className="space-y-4">
           {activeBookingsList.map((booking) => {
             const startStr = new Date(booking.startDate).toLocaleDateString();
@@ -436,6 +452,57 @@ export default function RentalsHistoryPage() {
               </div>
             );
           })}
+        </div>
+      ) : (
+        /* Listings Tab rendering */
+        <div className="space-y-4">
+          {ownedListings.length === 0 ? (
+            <div className="bg-surface-lowest border border-surface-highest rounded-3xl p-12 text-center text-slate-500 max-w-md mx-auto space-y-2">
+              <Calendar size={48} className="text-slate-300 mx-auto" />
+              <p className="text-xs font-light">You have not listed any items for rent yet.</p>
+            </div>
+          ) : (
+            ownedListings.map((listing) => (
+              <div
+                key={listing.id}
+                className="bg-surface-lowest border border-surface-highest rounded-3xl p-5 shadow-sm space-y-4 hover:shadow-md transition flex flex-col md:flex-row justify-between md:items-center gap-4"
+              >
+                <div className="flex items-center space-x-4">
+                  {listing.imageUrl && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={listing.imageUrl}
+                      alt={listing.title}
+                      className="w-16 h-16 rounded-2xl object-cover border border-surface-highest flex-shrink-0"
+                    />
+                  )}
+                  <div>
+                    <span className="bg-slate-100 text-slate-700 text-[9px] px-2 py-0.5 rounded-full font-bold uppercase">
+                      {listing.category}
+                    </span>
+                    <h4 className="font-bold text-primary text-base leading-snug">{listing.title}</h4>
+                    <p className="text-xs text-slate-500 font-light">{listing.location}, {listing.district}</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-start md:items-end justify-between gap-2 flex-shrink-0">
+                  <div className="text-[10px] text-slate-600 font-semibold space-y-0.5">
+                    {listing.priceHour && <p>Hour: ₹{listing.priceHour}</p>}
+                    {listing.priceDay && <p>Day: ₹{listing.priceDay}</p>}
+                    {listing.priceWeek && <p>Week: ₹{listing.priceWeek}</p>}
+                  </div>
+
+                  <button
+                    onClick={() => handleDeleteListing(listing.id)}
+                    className="bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-1"
+                  >
+                    <X size={14} />
+                    <span>Delete Listing</span>
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       )}
 

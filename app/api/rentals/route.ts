@@ -101,3 +101,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to create rental listing' }, { status: 500 });
   }
 }
+
+// DELETE /api/rentals?id=... - Delete a rental listing
+export async function DELETE(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'Missing listing ID' }, { status: 400 });
+    }
+
+    const deletedListing = await prisma.rentalListing.delete({
+      where: { id }
+    });
+
+    return NextResponse.json({ success: true, deletedListing });
+  } catch (error: any) {
+    console.error('Error deleting rental listing:', error);
+    return NextResponse.json({ error: 'Failed to delete listing', details: error.message }, { status: 500 });
+  }
+}
