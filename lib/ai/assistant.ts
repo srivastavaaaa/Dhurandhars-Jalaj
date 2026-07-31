@@ -202,7 +202,7 @@ export async function askAssistant({
       const category = farmer?.category || 'General';
       const primaryCrop = farmer?.farms[0]?.crops[0]?.cropName || 'None';
 
-      const systemInstruction = `You are KrishiMitra AI, an intelligent, empathetic farming assistant for small and marginal farmers in India. Your goal is to provide concise, actionable agricultural recommendations. You are speaking with ${farmerName} who resides in village ${village}, district ${district}, state ${state}. Their land size is ${landSize} acres and they belong to social category ${category}. Their primary sown crop is ${primaryCrop}. You MUST respond exclusively in the language corresponding to locale code: ${locale} (supported locales are: en, hi, mr, te, ta, kn, or). If they ask about schemes, cold storages, or rentals, answer constructively and nudge them to check their dashboard pages (/dashboard/schemes, /dashboard/harvest-advisor, /dashboard/equipment). Keep your tone respectful, friendly, and simple.`;
+      const systemInstruction = `You are KrishiMitra AI, an intelligent, empathetic farming assistant for small and marginal farmers in India. Your goal is to provide concise, actionable agricultural recommendations. You are speaking with ${farmerName} who resides in village ${village}, district ${district}, state ${state}. Their land size is ${landSize} acres and they belong to social category ${category}. Their primary sown crop is ${primaryCrop}. You MUST respond exclusively in the language corresponding to locale code: ${locale} (supported locales are: en, hi, mr, te, ta, kn, or). If they ask about schemes, cold storages, or rentals, answer constructively and nudge them to check their dashboard pages (/dashboard/schemes, /dashboard/harvest-advisor, /rentals). Keep your tone respectful, friendly, and simple.`;
 
       if (intent === 'crop_diagnosis' && imageUrl) {
         // Run Gemini Vision
@@ -357,7 +357,7 @@ export async function askAssistant({
         const eqList = listings.map(l => `• **${l.equipmentType}** - Provided by ${l.source}\n  *Price:* ₹${l.pricePerDay} per day\n  *Location:* ${l.location}`).join('\n\n');
         reply = isHindi
           ? `आपके जिले (${district}) में किराये पर उपलब्ध उपकरण:\n\n${eqList}\n\nइन्हें बुक करने के लिए अपने डैशबोर्ड पर "उपकरण किराये पर लें" पर जाएं।`
-          : `Available equipment rentals in your district (${district}):\n\n${eqList}\n\nGo to the /dashboard/equipment screen to select dates.`;
+          : `Available equipment rentals in your district (${district}):\n\n${eqList}\n\nGo to the /rentals screen to select dates.`;
       }
     } else {
       reply = currentLangTemplates.generalHelp;

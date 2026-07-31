@@ -36,7 +36,7 @@ export default function DashboardLayout({
     {
       label: 'Rentals',
       labelHi: 'किराया',
-      href: `/${locale}/dashboard/equipment`,
+      href: `/${locale}/rentals`,
       icon: Tractor
     },
     {
