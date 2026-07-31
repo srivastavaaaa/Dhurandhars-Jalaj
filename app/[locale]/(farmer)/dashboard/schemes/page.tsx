@@ -139,101 +139,218 @@ export default function SchemesPage() {
           </Link>
         </div>
       ) : (
-        <div className="space-y-6">
-          {matches.map((match) => {
-            const scheme = match.scheme;
-            const docList: string[] = JSON.parse(scheme.requiredDocuments);
-            const reasons = match.reasons || [];
-            const schemeChecklist = checklist[scheme.id] || {};
-            
-            return (
-              <div key={match.id} className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm space-y-6 hover:shadow-md transition">
-                {/* Upper block */}
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2 flex-wrap gap-y-1">
-                      <span className="bg-slate-100 text-slate-700 text-[10px] px-2.5 py-0.5 rounded-full font-semibold">
-                        {scheme.level} Scheme
-                      </span>
-                      <span className="bg-accent/20 text-secondary text-[10px] px-2.5 py-0.5 rounded-full font-semibold flex items-center space-x-1">
-                        <Award size={10} />
-                        <span>Match: {match.eligibilityScore}%</span>
-                      </span>
-                      {match.status === 'applied' && (
-                        <span className="bg-blue-50 text-blue-700 text-[10px] px-2.5 py-0.5 rounded-full font-semibold">
-                          ✓ Applied
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="text-lg font-bold text-slate-800">{scheme.name}</h3>
-                    <p className="text-xs text-slate-500 font-light leading-relaxed">{scheme.description}</p>
-                    
-                    {/* Matching criteria list */}
-                    <div className="pt-2 text-[10px] text-slate-600 font-medium space-y-1">
-                      {reasons.map((r, i) => (
-                        <div key={i} className="flex items-center space-x-1.5">
-                          <span className="text-secondary">✓</span>
-                          <span>{r}</span>
+        <div className="space-y-8">
+          {/* Group 1: 100% Matches */}
+          {matches.filter(m => m.eligibilityScore === 100).length > 0 && (
+            <div className="space-y-4">
+              <h3 className="text-sm font-black text-secondary uppercase tracking-wider flex items-center space-x-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-secondary inline-block"></span>
+                <span>Highly Recommended (100% Match)</span>
+              </h3>
+              <div className="space-y-4">
+                {matches.filter(m => m.eligibilityScore === 100).map((match) => {
+                  const scheme = match.scheme;
+                  const docList: string[] = JSON.parse(scheme.requiredDocuments);
+                  const reasons = match.reasons || [];
+                  const schemeChecklist = checklist[scheme.id] || {};
+                  
+                  return (
+                    <div key={match.id} className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm space-y-6 hover:shadow-md transition">
+                      {/* Upper block */}
+                      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                        <div className="space-y-2">
+                          <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+                            <span className="bg-slate-100 text-slate-700 text-[10px] px-2.5 py-0.5 rounded-full font-semibold">
+                              {scheme.level} Scheme
+                            </span>
+                            <span className="bg-emerald-50 text-secondary text-[10px] px-2.5 py-0.5 rounded-full font-semibold flex items-center space-x-1">
+                              <Award size={10} />
+                              <span>Match: {match.eligibilityScore}%</span>
+                            </span>
+                            {match.status === 'applied' && (
+                              <span className="bg-blue-50 text-blue-700 text-[10px] px-2.5 py-0.5 rounded-full font-semibold">
+                                ✓ Applied
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="text-lg font-bold text-slate-800">{scheme.name}</h3>
+                          <p className="text-xs text-slate-500 font-light leading-relaxed">{scheme.description}</p>
+                          
+                          {/* Matching criteria list */}
+                          <div className="pt-2 text-[10px] text-slate-600 font-medium space-y-1">
+                            {reasons.map((r, i) => (
+                              <div key={i} className="flex items-center space-x-1.5">
+                                <span className="text-secondary">✓</span>
+                                <span>{r}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                  </div>
 
-                  <div className="flex-shrink-0 flex flex-col items-start md:items-end space-y-1 text-xs">
-                    <span className="text-slate-400">Department</span>
-                    <span className="font-semibold text-slate-800 text-right">{scheme.source}</span>
-                  </div>
-                </div>
-
-                {/* Documents checklist (interactive) */}
-                <div className="bg-surface-low rounded-2xl p-4 border border-surface-highest space-y-3">
-                  <h4 className="text-xs font-bold text-slate-700 flex items-center space-x-1.5">
-                    <FileText size={16} className="text-slate-400" />
-                    <span>{t('requiredDocs')} Checklists</span>
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {docList.map((doc, idx) => (
-                      <div
-                        key={idx}
-                        onClick={() => toggleDocument(scheme.id, idx)}
-                        className="flex items-center space-x-2.5 p-2 bg-white rounded-xl border border-slate-100 hover:bg-slate-50 transition cursor-pointer select-none"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={!!schemeChecklist[idx]}
-                          readOnly
-                          className="w-4 h-4 rounded text-secondary border-surface-highest focus:ring-secondary"
-                        />
-                        <span className={`text-[11px] font-medium ${schemeChecklist[idx] ? 'line-through text-slate-400' : 'text-slate-700'}`}>
-                          {doc}
-                        </span>
+                        <div className="flex-shrink-0 flex flex-col items-start md:items-end space-y-1 text-xs">
+                          <span className="text-slate-400">Department</span>
+                          <span className="font-semibold text-slate-800 text-right">{scheme.source}</span>
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
 
-                {/* Footer action */}
-                <div className="flex items-center justify-between flex-wrap gap-4 pt-2 border-t border-slate-50">
-                  <div className="flex items-center space-x-2 text-[11px] text-slate-500 font-light">
-                    <Calendar size={14} className="text-slate-400" />
-                    <span>
-                      {scheme.deadline 
-                        ? `${t('deadline')}: ${new Date(scheme.deadline).toLocaleDateString()}` 
-                        : 'No active deadline'}
-                    </span>
-                  </div>
+                      {/* Documents checklist */}
+                      <div className="bg-surface-low rounded-2xl p-4 border border-surface-highest space-y-3">
+                        <h4 className="text-xs font-bold text-slate-700 flex items-center space-x-1.5">
+                          <FileText size={16} className="text-slate-400" />
+                          <span>{t('requiredDocs')} Checklists</span>
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {docList.map((doc, idx) => (
+                            <div
+                              key={idx}
+                              onClick={() => toggleDocument(scheme.id, idx)}
+                              className="flex items-center space-x-2.5 p-2 bg-white rounded-xl border border-slate-100 hover:bg-slate-50 transition cursor-pointer select-none"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={!!schemeChecklist[idx]}
+                                readOnly
+                                className="w-4 h-4 rounded text-secondary border-surface-highest focus:ring-secondary"
+                              />
+                              <span className={`text-[11px] font-medium ${schemeChecklist[idx] ? 'line-through text-slate-400' : 'text-slate-700'}`}>
+                                {doc}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
 
-                  <button
-                    onClick={() => handleApply(scheme.id, scheme.applyUrl)}
-                    className="flex items-center space-x-1.5 bg-primary hover:bg-emerald-950 text-white font-bold text-xs px-5 py-3 rounded-xl transition"
-                  >
-                    <span>{t('applyNow')}</span>
-                    <ExternalLink size={14} />
-                  </button>
-                </div>
+                      {/* Footer action */}
+                      <div className="flex items-center justify-between flex-wrap gap-4 pt-2 border-t border-slate-50">
+                        <div className="flex items-center space-x-2 text-[11px] text-slate-500 font-light">
+                          <Calendar size={14} className="text-slate-400" />
+                          <span>
+                            {scheme.deadline 
+                              ? `${t('deadline')}: ${new Date(scheme.deadline).toLocaleDateString()}` 
+                              : 'No active deadline'}
+                          </span>
+                        </div>
+
+                        <button
+                          onClick={() => handleApply(scheme.id, scheme.applyUrl)}
+                          className="flex items-center space-x-1.5 bg-primary hover:bg-emerald-950 text-white font-bold text-xs px-5 py-3 rounded-xl transition"
+                        >
+                          <span>{t('applyNow')}</span>
+                          <ExternalLink size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
+            </div>
+          )}
+
+          {/* Group 2: Partial Matches */}
+          {matches.filter(m => m.eligibilityScore >= 50 && m.eligibilityScore < 100).length > 0 && (
+            <div className="space-y-4 pt-4 border-t border-slate-100">
+              <h3 className="text-sm font-black text-amber-600 uppercase tracking-wider flex items-center space-x-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                <span>Partially Eligible Matches (50-99% Score)</span>
+              </h3>
+              <div className="space-y-4">
+                {matches.filter(m => m.eligibilityScore >= 50 && m.eligibilityScore < 100).map((match) => {
+                  const scheme = match.scheme;
+                  const docList: string[] = JSON.parse(scheme.requiredDocuments);
+                  const reasons = match.reasons || [];
+                  const schemeChecklist = checklist[scheme.id] || {};
+                  
+                  return (
+                    <div key={match.id} className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm space-y-6 hover:shadow-md transition">
+                      {/* Upper block */}
+                      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                        <div className="space-y-2">
+                          <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+                            <span className="bg-slate-100 text-slate-700 text-[10px] px-2.5 py-0.5 rounded-full font-semibold">
+                              {scheme.level} Scheme
+                            </span>
+                            <span className="bg-amber-50 text-amber-600 text-[10px] px-2.5 py-0.5 rounded-full font-semibold flex items-center space-x-1">
+                              <Award size={10} />
+                              <span>Match: {match.eligibilityScore}%</span>
+                            </span>
+                            {match.status === 'applied' && (
+                              <span className="bg-blue-50 text-blue-700 text-[10px] px-2.5 py-0.5 rounded-full font-semibold">
+                                ✓ Applied
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="text-lg font-bold text-slate-800">{scheme.name}</h3>
+                          <p className="text-xs text-slate-500 font-light leading-relaxed">{scheme.description}</p>
+                          
+                          {/* Matching criteria list */}
+                          <div className="pt-2 text-[10px] text-slate-600 font-medium space-y-1">
+                            {reasons.map((r, i) => (
+                              <div key={i} className="flex items-center space-x-1.5">
+                                <span className="text-slate-400">⚠</span>
+                                <span>{r}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="flex-shrink-0 flex flex-col items-start md:items-end space-y-1 text-xs">
+                          <span className="text-slate-400">Department</span>
+                          <span className="font-semibold text-slate-800 text-right">{scheme.source}</span>
+                        </div>
+                      </div>
+
+                      {/* Documents checklist */}
+                      <div className="bg-surface-low rounded-2xl p-4 border border-surface-highest space-y-3">
+                        <h4 className="text-xs font-bold text-slate-700 flex items-center space-x-1.5">
+                          <FileText size={16} className="text-slate-400" />
+                          <span>{t('requiredDocs')} Checklists</span>
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {docList.map((doc, idx) => (
+                            <div
+                              key={idx}
+                              onClick={() => toggleDocument(scheme.id, idx)}
+                              className="flex items-center space-x-2.5 p-2 bg-white rounded-xl border border-slate-100 hover:bg-slate-50 transition cursor-pointer select-none"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={!!schemeChecklist[idx]}
+                                readOnly
+                                className="w-4 h-4 rounded text-secondary border-surface-highest focus:ring-secondary"
+                              />
+                              <span className={`text-[11px] font-medium ${schemeChecklist[idx] ? 'line-through text-slate-400' : 'text-slate-700'}`}>
+                                {doc}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Footer action */}
+                      <div className="flex items-center justify-between flex-wrap gap-4 pt-2 border-t border-slate-50">
+                        <div className="flex items-center space-x-2 text-[11px] text-slate-500 font-light">
+                          <Calendar size={14} className="text-slate-400" />
+                          <span>
+                            {scheme.deadline 
+                              ? `${t('deadline')}: ${new Date(scheme.deadline).toLocaleDateString()}` 
+                              : 'No active deadline'}
+                          </span>
+                        </div>
+
+                        <button
+                          onClick={() => handleApply(scheme.id, scheme.applyUrl)}
+                          className="flex items-center space-x-1.5 bg-primary hover:bg-emerald-950 text-white font-bold text-xs px-5 py-3 rounded-xl transition"
+                        >
+                          <span>{t('applyNow')}</span>
+                          <ExternalLink size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
