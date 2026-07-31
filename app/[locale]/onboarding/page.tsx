@@ -12,8 +12,8 @@ export default function OnboardingPage() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Wizard steps: 'auth' -> 'language' -> 'details' -> 'farm' -> 'consent' -> 'complete'
-  const [step, setStep] = useState<'auth' | 'language' | 'details' | 'farm' | 'consent' | 'complete'>('auth');
+  // Wizard steps: 'language' -> 'auth' -> 'details' -> 'farm' -> 'consent' -> 'complete'
+  const [step, setStep] = useState<'auth' | 'language' | 'details' | 'farm' | 'consent' | 'complete'>('language');
 
   // Auth state
   const [phone, setPhone] = useState('');
@@ -77,11 +77,11 @@ export default function OnboardingPage() {
       
       // Profile not found, proceed to registration flow
       setIsVerifying(false);
-      setStep('language');
+      setStep('details');
     } catch (e) {
       console.error('Error during automatic login check:', e);
       setIsVerifying(false);
-      setStep('language');
+      setStep('details');
     }
   };
 
@@ -192,13 +192,24 @@ export default function OnboardingPage() {
               )}
             </div>
 
-            <button
-              onClick={otpSent ? handleVerifyOtp : handleSendOtp}
-              disabled={isVerifying}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl shadow-lg transition active:scale-95 disabled:opacity-50"
-            >
-              {isVerifying ? tc('loading') : (otpSent ? t('verifyOtp') : t('sendOtp'))}
-            </button>
+            <div className="flex space-x-3">
+              <button
+                onClick={() => {
+                  setOtpSent(false);
+                  setStep('language');
+                }}
+                className="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold py-4 rounded-2xl transition"
+              >
+                Back
+              </button>
+              <button
+                onClick={otpSent ? handleVerifyOtp : handleSendOtp}
+                disabled={isVerifying}
+                className="w-2/3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl shadow-lg transition active:scale-95 disabled:opacity-50"
+              >
+                {isVerifying ? tc('loading') : (otpSent ? t('verifyOtp') : t('sendOtp'))}
+              </button>
+            </div>
           </div>
         )}
 
@@ -233,7 +244,7 @@ export default function OnboardingPage() {
             </div>
 
             <button
-              onClick={() => setStep('details')}
+              onClick={() => setStep('auth')}
               className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl shadow-lg transition active:scale-95"
             >
               Next / अगला
