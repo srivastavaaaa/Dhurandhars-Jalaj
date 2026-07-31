@@ -6,9 +6,18 @@ import Link from 'next/link';
 // Client component for dynamic notifications listing
 import NotificationList from './NotificationList';
 
+// Core business logic engine imports
+import { evaluateSchemeEligibility } from '@/lib/schemes/matcher';
+import { calculateSpoilageRisk } from '@/lib/postharvest/riskModel';
+
 const prisma = new PrismaClient();
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  params
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params;
   const cookieStore = await cookies();
   const farmerId = cookieStore.get('krishi_farmer_id')?.value;
 
@@ -23,8 +32,6 @@ export default async function DashboardPage() {
             crops: true
           }
         },
-        schemeMatches: true,
-        bookings: true,
         notifications: {
           orderBy: { sentAt: 'desc' }
         }
@@ -42,7 +49,7 @@ export default async function DashboardPage() {
             You need to create a farm profile before accessing the dashboard.
           </p>
           <Link
-            href="/onboarding"
+            href={`/${locale}/onboarding`}
             className="block w-full bg-primary hover:bg-emerald-950 text-white font-bold py-3.5 rounded-2xl transition"
           >
             Register Profile
@@ -54,8 +61,53 @@ export default async function DashboardPage() {
 
   const farm = farmer.farms[0];
   const crop = farm?.crops[0];
-  const eligibleSchemesCount = farmer.schemeMatches.filter(m => m.status === 'suggested').length;
-  const activeBookingsCount = farmer.bookings.filter(b => b.status === 'confirmed').length;
+
+  // 1. Calculate dynamic schemes count matching farmer criteria
+  const schemes = await prisma.scheme.findMany({ where: { isActive: true } });
+  const eligibleSchemesCount = schemes.filter(scheme => {
+    const match = evaluateSchemeEligibility(scheme.eligibilityRules as any, {
+      state: farmer!.state,
+      landSizeAcres: farmer!.landSizeAcres,
+      category: farmer!.category,
+      crops: farmer!.farms.flatMap(f => f.crops.map(c => c.cropName))
+    });
+    return match.eligible;
+  }).length;
+
+  // 2. Calculate dynamic post-harvest advisory risk
+  let riskScore = 0;
+  if (crop) {
+    const riskResult = calculateSpoilageRisk({
+      cropName: crop.cropName,
+      daysSinceHarvest: 5, // Simulated 5 days stored
+      humidity: 65,
+      temperature: 28,
+      isWarehouseStored: false
+    });
+    riskScore = riskResult.spoilageRiskScore;
+  }
+
+  // 3. Count dynamic active bookings from new rentals model
+  let activeBookingsCount = 0;
+  if (farmerId) {
+    const renterBookingsCount = await prisma.rentalBooking.count({
+      where: {
+        renterId: farmerId,
+        status: 'confirmed'
+      }
+    });
+
+    const ownerBookingsCount = await prisma.rentalBooking.count({
+      where: {
+        listing: {
+          ownerId: farmerId
+        },
+        status: 'confirmed'
+      }
+    });
+
+    activeBookingsCount = renterBookingsCount + ownerBookingsCount;
+  }
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10 space-y-8">
@@ -73,13 +125,13 @@ export default async function DashboardPage() {
 
         <div className="flex space-x-2 relative z-10">
           <Link
-            href="/dashboard/profile"
+            href={`/${locale}/dashboard/profile`}
             className="bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition"
           >
             Edit Profile
           </Link>
           <Link
-            href="/onboarding"
+            href={`/${locale}/onboarding`}
             className="bg-accent hover:bg-accent/80 text-primary text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-md"
           >
             Switch Language
@@ -96,7 +148,7 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Schemes Match Card */}
         <Link
-          href="/dashboard/schemes"
+          href={`/${locale}/dashboard/schemes`}
           className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm hover:shadow-md transition flex items-start justify-between group"
         >
           <div className="space-y-4">
@@ -115,7 +167,7 @@ export default async function DashboardPage() {
 
         {/* Post-Harvest advisor Card */}
         <Link
-          href="/dashboard/harvest-advisor"
+          href={`/${locale}/dashboard/harvest-advisor`}
           className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm hover:shadow-md transition flex items-start justify-between group"
         >
           <div className="space-y-4">
@@ -125,7 +177,7 @@ export default async function DashboardPage() {
             <div>
               <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider block">Harvest Advisory</span>
               <span className="text-2xl font-black text-slate-800">
-                {crop?.cropName ? '35% Spoilage' : 'No advisory'}
+                {crop?.cropName ? `${riskScore}% Spoilage Risk` : 'No advisory'}
               </span>
             </div>
           </div>
@@ -136,7 +188,7 @@ export default async function DashboardPage() {
 
         {/* Equipment Rentals Card */}
         <Link
-          href="/dashboard/equipment"
+          href={`/${locale}/rentals`}
           className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm hover:shadow-md transition flex items-start justify-between group"
         >
           <div className="space-y-4">

@@ -53,17 +53,36 @@ export default function OnboardingPage() {
     setOtpSent(true);
   };
 
-  const handleVerifyOtp = () => {
+  const handleVerifyOtp = async () => {
     if (otp.length < 6) {
       alert('Please enter a valid 6-digit OTP');
       return;
     }
     setIsVerifying(true);
-    // Simulate API delay
-    setTimeout(() => {
+    
+    try {
+      // Check if user profile already exists
+      const res = await fetch('/api/farmers/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone })
+      });
+
+      if (res.ok) {
+        // Profile exists, direct login complete!
+        setIsVerifying(false);
+        router.push(`/${locale}/dashboard`);
+        return;
+      }
+      
+      // Profile not found, proceed to registration flow
       setIsVerifying(false);
       setStep('language');
-    }, 1000);
+    } catch (e) {
+      console.error('Error during automatic login check:', e);
+      setIsVerifying(false);
+      setStep('language');
+    }
   };
 
   const stateDistricts: Record<string, string> = {
