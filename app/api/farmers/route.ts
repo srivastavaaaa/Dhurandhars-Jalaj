@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
 
         try {
           const rules = JSON.parse(scheme.eligibilityRules);
-          
+
           // Deterministic scoring logic
           let matchCount = 0;
           let totalRules = 0;
@@ -131,7 +131,7 @@ export async function POST(req: NextRequest) {
     });
 
     const response = NextResponse.json({ success: true, data: result });
-    
+
     // Set cookie on client to state they are logged in and registered
     response.cookies.set('krishi_user_role', 'farmer', { path: '/', maxAge: 60 * 60 * 24 * 30 });
     response.cookies.set('krishi_user_registered', 'true', { path: '/', maxAge: 60 * 60 * 24 * 30 });

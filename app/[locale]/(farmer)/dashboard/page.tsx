@@ -156,7 +156,7 @@ export default async function DashboardPage() {
 
       {/* Main Grid: Crop Diagnostics status + Notification List */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* Crop Diagnostics & Bio Summary */}
         <div className="lg:col-span-1 space-y-6">
           <div className="bg-surface-lowest border border-surface-highest rounded-3xl p-6 shadow-sm space-y-4">
@@ -164,7 +164,7 @@ export default async function DashboardPage() {
               <Sprout size={18} className="text-secondary" />
               <span>Active Crop Status</span>
             </h3>
-            
+
             {crop ? (
               <div className="space-y-4">
                 <div className="flex justify-between items-center text-xs">
@@ -181,13 +181,12 @@ export default async function DashboardPage() {
                 </div>
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-slate-400">Health Index:</span>
-                  <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${
-                    crop.status === 'Healthy' 
-                      ? 'bg-green-50 text-green-700' 
-                      : crop.status === 'Diseased' 
-                        ? 'bg-red-50 text-red-700' 
+                  <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${crop.status === 'Healthy'
+                      ? 'bg-green-50 text-green-700'
+                      : crop.status === 'Diseased'
+                        ? 'bg-red-50 text-red-700'
                         : 'bg-amber-50 text-amber-700'
-                  }`}>{crop.status}</span>
+                    }`}>{crop.status}</span>
                 </div>
               </div>
             ) : (
@@ -203,7 +202,7 @@ export default async function DashboardPage() {
               <Bell size={18} className="text-secondary" />
               <span>Notifications & Action Alerts</span>
             </h3>
-            
+
             <NotificationList initialNotifications={farmer.notifications} />
           </div>
         </div>

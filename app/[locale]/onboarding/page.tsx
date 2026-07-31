@@ -14,7 +14,7 @@ export default function OnboardingPage() {
 
   // Wizard steps: 'auth' -> 'language' -> 'details' -> 'farm' -> 'consent' -> 'complete'
   const [step, setStep] = useState<'auth' | 'language' | 'details' | 'farm' | 'consent' | 'complete'>('auth');
-  
+
   // Auth state
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
@@ -28,12 +28,12 @@ export default function OnboardingPage() {
   const [district, setDistrict] = useState('Wardha');   // Default matching our seeded pilot data
   const [landSize, setLandSize] = useState('2.5'); // Acres
   const [category, setCategory] = useState('General');
-  
+
   // Farm & Crop details
   const [primaryCrop, setPrimaryCrop] = useState('Cotton');
   const [soilType, setSoilType] = useState('Black');
   const [irrigationType, setIrrigationType] = useState('Drip');
-  
+
   // Consent
   const [consentGiven, setConsentGiven] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -122,7 +122,7 @@ export default function OnboardingPage() {
   return (
     <div className="flex-1 flex flex-col justify-center items-center min-h-[80vh] px-4 py-8 bg-slate-50">
       <div className="w-full max-w-xl bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden p-6 md:p-8 space-y-8 animate-in fade-in zoom-in-95 duration-200">
-        
+
         {/* Logo and Progress Header */}
         <div className="flex flex-col items-center space-y-2 text-center">
           <div className="p-3 bg-emerald-600 rounded-2xl text-white inline-block">
@@ -203,11 +203,10 @@ export default function OnboardingPage() {
                 <button
                   key={lang.code}
                   onClick={() => changeLanguage(lang.code)}
-                  className={`p-4 rounded-2xl border text-center transition font-semibold text-sm active:scale-95 ${
-                    locale === lang.code
+                  className={`p-4 rounded-2xl border text-center transition font-semibold text-sm active:scale-95 ${locale === lang.code
                       ? 'bg-emerald-50 border-emerald-500 text-emerald-700 shadow-sm'
                       : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                  }`}
+                    }`}
                 >
                   {lang.label}
                 </button>
@@ -318,11 +317,10 @@ export default function OnboardingPage() {
                       key={item.val}
                       onClick={() => setLandSize(item.val)}
                       type="button"
-                      className={`p-3.5 rounded-2xl border text-center transition font-semibold text-xs active:scale-95 ${
-                        landSize === item.val
+                      className={`p-3.5 rounded-2xl border text-center transition font-semibold text-xs active:scale-95 ${landSize === item.val
                           ? 'bg-emerald-50 border-emerald-500 text-emerald-700'
                           : 'bg-white border-slate-200 text-slate-500'
-                      }`}
+                        }`}
                     >
                       {item.label}
                     </button>
@@ -339,11 +337,10 @@ export default function OnboardingPage() {
                       key={cat}
                       onClick={() => setCategory(cat)}
                       type="button"
-                      className={`p-2.5 rounded-2xl border text-center transition font-semibold text-xs active:scale-95 ${
-                        category === cat
+                      className={`p-2.5 rounded-2xl border text-center transition font-semibold text-xs active:scale-95 ${category === cat
                           ? 'bg-emerald-50 border-emerald-500 text-emerald-700'
                           : 'bg-white border-slate-200 text-slate-500'
-                      }`}
+                        }`}
                     >
                       {cat}
                     </button>
@@ -360,11 +357,10 @@ export default function OnboardingPage() {
                       key={crop}
                       onClick={() => setPrimaryCrop(crop)}
                       type="button"
-                      className={`p-2.5 rounded-2xl border text-center transition font-semibold text-xs active:scale-95 ${
-                        primaryCrop === crop
+                      className={`p-2.5 rounded-2xl border text-center transition font-semibold text-xs active:scale-95 ${primaryCrop === crop
                           ? 'bg-emerald-50 border-emerald-500 text-emerald-700'
                           : 'bg-white border-slate-200 text-slate-500'
-                      }`}
+                        }`}
                     >
                       {crop}
                     </button>
@@ -479,7 +475,7 @@ export default function OnboardingPage() {
             <div className="p-4 bg-emerald-100 rounded-full text-emerald-600">
               <CheckCircle2 size={48} className="animate-bounce" />
             </div>
-            
+
             <div className="space-y-2">
               <h3 className="text-xl font-bold text-slate-800">{t('completed')}</h3>
               <p className="text-xs text-slate-500 max-w-sm">
